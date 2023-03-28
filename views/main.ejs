@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<%
+var p = {
+    page: page,
+    title: 'Главная'
+}
+%>
+
+<head>
+    <%- include('fr/header', p); %>
+
+
+    <link rel="icon" href="../img/favicon.ico">
+
+    <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/qrcode.js"></script>
+    <script src="../js/bundle.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+
+        const msg = new Messages("messages");
+        const act = new Messages("actions");
+        let socket = io();
+
+        let rsa = simplersa();
+
+        socket.on('connected', (message) => {
+            rsa.gen.pri(512);
+            let qrData = {
+                cid: message,
+                pub: rsa.get.pub()
+            };
+
+            let qr = qrcode(0, 'L');
+            qr.addData(JSON.stringify(qrData));
+            qr.make();
+            $("#qrcode").html(qr.createImgTag(5));
+            let testOut = document.getElementById('testOut');
+            if (testOut) {
+                $("input[name=cid]").val(qrData.cid);
+                $("textarea[name=pub]").val(qrData.pub);
+            }
+
+        });
+
+        socket.on('disconnect', () => {
+            connection('off')
+        });
+
+        socket.on('notify', (message) => {
+            if (message) {
+                connection('on', message)
+            }
+        });
+
+        let tmid;
+        socket.on('pass transfer', (message) => {
+
+            if (tmid) clearTimeout(tmid);
+
+            let ps = rsa.dec(message);
+
+
+            copyToClipboard(ps).then(() => {
+                msg.showInfo("Скопировано в буфер")
+                tmid = setTimeout(function () {
+                    copyToClipboard('');
+                }, 10000)
+            }).catch((e) => {
+                act.showAction(
+                    "Нажмите чтобы скопировать в буфер обмена",
+                    function () {
+                        copypass(message)
+                    }
+                );
+            });
+        });
+
+        function connection(m, n) {
+            if (m === 'on') {
+                $('#help-topic').fadeOut(2000);
+                $("#appname").html(n).parent().addClass('online');
+                $("#qrcodebg").attr('class', 'online');
+                msg.showInfo(`Подключено к '${n}'`)
+            }
+            if (m === 'off') {
+                $('#help-topic').fadeIn(2000);
+                $("#appname").html("нет подключения").parent().removeClass('online');
+                $("#qrcodebg").attr('class', 'offline');
+                $("#qrcode").html("wait...")
+                act.showAction('Соединение разорвано! Перезагрузите страницу.', function () {
+                    document.location.reload();
+                });
+            }
+        }
+
+        function copypass(message) {
+            let ps = rsa.dec(message);
+            copyToClipboard(ps).then(() => {
+                act.showWarn("Скопировано в буфер. Не забудьте его очистить после вставки!", 5000)
+            }).catch((e) => {
+                act.showErr('Ваш браузер не поддерживает сохранение в буфер обмена');
+            });
+        }
+
+        $(document).ready(() => {
+            msg.init();
+            act.init({
+                timeout: -1
+            });
+            socket.emit('check', '<%= clientId %>')
+            $('.inputs').on('click', function () {
+                copyToClipboard($(this).val()).then(msg.showInfo('Скопировано')).catch(this.select());
+            });
+            $('#help-topic').fadeIn(2000);
+        });
+
+    </script>
+
+
+</head>
+<body>
+
+<%- include('fr/navigation', p); %>
+
+<main class="order-1">
+
+    <div class="container">
+
+        <section id="main" class="bg-light p-5 rounded">
+
+            <p class="h3 text-center connection-status">
+                <span id="appname">нет подключения</span>
+            </p>
+
+            <div style="min-height: 300px">
+                <div class="content-bg">
+                    <div id="qrcodebg" class="offline">
+                        <div id="qrcode">wait...</div>
+                    </div>
+
+                    <% if(mode === '2') { %>
+                        <div id="testOut">
+                            <p><input readonly class="inputs" type="text" style="width: 600px" name="cid" value=""
+                                      placeholder="Client ID"></p>
+                            <p><textarea class="inputs" name="pub" readonly style="width: 600px; height: 100px;"
+                                         placeholder="Publick KEY"></textarea>
+                            </p>
+                        </div>
+                    <% } %>
+
+                    <div id="help-topic" style="display: none">
+                        <br/>
+                        <p>
+                            Откройте приложение <b>PassTransfer</b> на своем мобильном устройстве
+                        </p>
+                        <p>
+                            Нажмите значок <img width="24" height="24" src="/img/ic_connect.svg" title="Подключиться"> в
+                            меню приложения
+                        </p>
+                        <p>
+                            Наведите камеру так, чтобы распознать QR код и дождитесь когда появится сообщение об
+                            успешном подключении
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div id="messages" class="messages"></div>
+                <div id="actions" class="messages"></div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<%- include('fr/footer', p); %>
+
+
+</body>
+</html>

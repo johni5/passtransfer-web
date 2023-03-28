@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<%
+var p = {
+    page: page,
+    title: 'Контакты'
+}
+%>
+<head>
+    <%- include('fr/header', p); %>
+</head>
+<body>
+
+<%- include('fr/navigation', p); %>
+
+<main class="main-container">
+
+    <section id="contacts" class="container">
+        <h1 class="page-header">Контакты</h1>
+        <div class="bg-light p-5 rounded" style="min-height: 300px">
+            <p>
+                qrtransfer@outlook.com
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<%- include('fr/footer', p); %>
+
+
+</body>
+</html>

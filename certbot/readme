@@ -1,0 +1,5 @@
+копируем всю папку certbot на сервер
+выполняем
+    cmpd +x init-letsencrypt.sh
+    ./init-letsencrypt.sh
+Коприуем ключ из папки archive в рабочую диррекорию

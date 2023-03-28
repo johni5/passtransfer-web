@@ -1,0 +1,1 @@
+docker build -t johni5/pst:2 .

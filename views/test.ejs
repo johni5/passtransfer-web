@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<%
+var p = {
+    page: page,
+    title: 'Главная'
+}
+%>
+
+<head>
+    <%- include('fr/header', p); %>
+
+    <script src="../js/bundle.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+
+        const msg = new Messages("messages");
+
+        let rsa = simplersa();
+
+        function sendCheck() {
+            let cid = $("input[name=cid]").val();
+            let name = $("input[name=appname]").val();
+            let url = "/notify/" + cid + "/" + encodeURIComponent(name);
+            $.get(url).done((data) => processResponse(data)).fail((data) => processError(data));
+        }
+
+        function sendDisconnect() {
+            let cid = $("input[name=cid]").val();
+            let url = "/close/" + cid;
+            $.get(url).done((data) => processResponse(data)).fail((data) => processError(data));
+        }
+
+        function sendMessageToServer() {
+            let pub = $("textarea[name=pub]").val();
+            rsa.set.pub(pub);
+            let cid = $("input[name=cid]").val();
+            let text = rsa.enc($("input[name=mval]").val());
+            let url = "/send/" + cid + "/" + encodeURIComponent(text);
+            $.get(url).done((data) => processResponse(data)).fail((data) => processError(data));
+        }
+
+        function processResponse(data) {
+            if (data === 'OK') {
+                msg.showInfo("Успешно выполнено")
+            } else {
+                msg.showErr(`Возникли проблемы на сервере: ${data}`);
+            }
+        }
+
+        function processError(data) {
+            msg.showErr(`Возникли проблемы на сервере: ${data.responseText}`);
+        }
+
+        $(document).ready(function () {
+            msg.init();
+            $('.inputs').on('click', function () {
+                this.select()
+            });
+        })
+
+    </script>
+
+
+</head>
+<body>
+
+<%- include('fr/navigation', p); %>
+
+<div class="">
+
+    <main>
+
+        <section id="main" class="container">
+
+            <div class="top-bg">
+                <div class="header1">
+                    <span id="appname">Тест сервисов </span>
+                </div>
+            </div>
+
+            <div class="content-bg">
+
+                <p>
+                    <input class="inputs" type="text" name="appname" style="width: 600px" value="My name"
+                           placeholder="App Name">
+                </p>
+                <p>
+                    <input class="inputs" type="text" style="width: 600px" name="cid" value="" placeholder="Client ID">
+                </p>
+                <p>
+            <textarea class="inputs" name="pub" style="width: 600px; height: 100px;"
+                      placeholder="Publick KEY"></textarea>
+                </p>
+                <p>
+                    <input class="inputs" type="text" name="mval" style="width: 600px" value="Hello world"
+                           placeholder="Message">
+                </p>
+
+                <p>
+                    <button onclick="sendMessageToServer()">
+                        Отправить
+                    </button>
+
+                    <button onclick="sendCheck()" style="margin-left: 10px">
+                        Уведомление
+                    </button>
+
+                    <button onclick="sendDisconnect()" style="margin-left: 10px">
+                        Разорвать
+                    </button>
+                </p>
+            </div>
+
+
+            <div id="messages" class="messages"></div>
+
+        </section>
+
+
+    </main>
+
+    <%- include('fr/footer', p); %>
+
+</div>
+
+
+</body>
+</html>

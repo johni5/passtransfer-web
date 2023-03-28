@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<%
+var p = {
+    page: page,
+    title: 'Скачать'
+}
+%>
+<head>
+    <%- include('fr/header', p); %>
+</head>
+<body>
+
+<%- include('fr/navigation', p); %>
+
+<main class="main-container">
+
+    <section id="download" class="container">
+        <h1 class="page-header">Скачать</h1>
+        <div class="bg-light p-5 rounded" style="min-height: 300px">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img height="140" width="140" src="../img/PSTransfer_Circle.png">
+                    <h2 class="fw-normal">Pass Transfer</h2>
+                    <p>Скачайте мобильную версию приложения под Android с Google Play </p>
+                    <a href="https://play.google.com/store/apps/details?id=com.del.pst"
+                       aria-label="Get Apps from Google Play" target="_blank">
+                        <img src="../img/googleplay.svg" alt="Get Apps from Google Play">
+                    </a>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-6">
+                    <img height="140" width="140" src="../img/Firefox_logo.svg">
+                    <h2 class="fw-normal">Mozila Firefox</h2>
+                    <p>Рекомендуем установить последнюю версию браузера для корректной работы приложения</p>
+                    <p><a class="btn btn-secondary" href="https://www.mozilla.org/ru/firefox/new/" target="_blank">Перейти на сайт</a></p>
+                </div><!-- /.col-lg-4 -->
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<%- include('fr/footer', p); %>
+
+</body>
+</html>

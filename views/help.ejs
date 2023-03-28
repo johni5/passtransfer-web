@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<%
+var p = {
+    page: page,
+    title: 'Помощь'
+}
+%>
+<head>
+    <%- include('fr/header', p); %>
+</head>
+<body>
+
+<%- include('fr/navigation', p); %>
+
+<main class="main-container">
+
+    <section id="help" class="container">
+
+        <h1 class="page-header">Помощь</h1>
+
+        <div class="bg-light p-5 rounded" style="min-height: 300px">
+
+            <div class="row  row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Списки</h5>
+                            <p class="card-text">
+                                Создавайте списки используя разные коды
+                            </p>
+
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <ul>
+                                    <li class="">Введите код 1</li>
+                                    <li class="">Добавляйте записи</li>
+                                    <li class="">Введите код 2 (предыдущие записи исчезнут)</li>
+                                    <li class="">Добавляйте записи</li>
+                                    <li class="">Чтобы перейти к списку 1 заново введите код 1</li>
+                                </ul>
+                            </li>
+                            <li class="list-group-item">
+                                Количество кодов не ограничено
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Какой сложности должен быть код?
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Достаточно простой комбинации 4-6 цифробуквенной последовательности, которая позволит защитить данные от ручного перебора.</p>
+                            <p class="card-text">Для надежности шифрования дополнительно используется аппаратная поддержка Android.</p>
+                            <p class="card-text">Простые комбинации (0000 или 1234) подойдут для хранения не критической информации, которая может быть полезна, например, для отвода глаз злоумышленника в случае кражи аппарата.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Передача данных на внешнее устройство
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Приложение позволяет передавать данные с телефона на другие устройства, подключенные к сети.
+                            <p class="card-text">
+                                Безопасность передачи обеспечивается механизмом ассиметричного шифрования.
+                            </p>
+                            <p class="card-text">
+                                Передача данных происходит из приложения в буфер обмена внешнего устройства (клиента).
+                            </p>
+                            <p class="card-text">
+                                Для начала передачи перейдите <a href="/">на страницу подключения</a> и отсканируйте QR код для осуществления связи приложения и клиента.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Полезные советы.
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <ul>
+                                    <li class="">По завершении работы с приложением, всегда очищайте буфер обмена вашего мобильного и внешнего устройства.</li>
+                                    <li class="">Не используйте слишком простые коды для создания списков в которых планируется хранить критически важную информацию.</li>
+                                    <li class="">Установите пароль непосредственно на само мобильное устройство или используйте биометрическую защиту.</li>
+                                    <li class="">После передачи данных на внешнее устройство перезагрузите страницу сайта или закройте браузер.</li>
+                                    <li class="">Не оставляйте телефон с открытым приложением без присмотра</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+</main>
+
+<%- include('fr/footer', p); %>
+
+</body>
+</html>
