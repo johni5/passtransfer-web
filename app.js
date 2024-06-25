@@ -11,8 +11,8 @@ const express = require('express'),
 
 var argv = require('minimist')(process.argv.slice(2));
 
-// const HOST = 'z34407.adman.cloud';
-const HOST = 'passt.site';
+const HOST = 'z34407.adman.cloud';
+//const HOST = 'passt.site';
 const PORT = 7000;
 const S_PORT = 443;
 
@@ -127,6 +127,10 @@ app.get('/help', (req, res) => {
 
 app.get('/privacy', (req, res) => {
     res.render(`privacy`, {page: 'privacy'});
+});
+
+app.get('/info', (req, res) => {
+    res.render(`info`, {page: 'info'});
 });
 
 app.get('/contacts', (req, res) => {

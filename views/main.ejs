@@ -27,7 +27,7 @@ var p = {
         let rsa = simplersa();
 
         socket.on('connected', (message) => {
-            rsa.gen.pri(512);
+            rsa.gen.pri(1024);
             let qrData = {
                 cid: message,
                 pub: rsa.get.pub()

@@ -1,1 +1,1 @@
-docker push johni5/pst:2
+docker push johni5/pst:1
