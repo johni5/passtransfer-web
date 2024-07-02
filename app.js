@@ -81,35 +81,30 @@ io.on('connection', (socket) => {
     });
 
     socket.on('check', (clientId) => {
+        if (argv.l) console.log(`WS check from ${clientId}`);
         clients.map((v) => {
             if (v.cid === clientId) {
                 v.mid = socket.id;
                 io.to(v.mid).emit('connected', v.cid);
+                if (argv.l) console.log(`${v.sid} connected with ${clientId}`);
             }
         });
     });
 
     socket.on('disconnect', () => {
+        if (argv.l) {
+            console.log(`Disconnect ${socket.id}`);
+            clients.logValues();
+        }
         clients.remove(socket.id);
+        clients.logValues();
     })
 });
 
 // to test mode: /connect?mode=2
 app.get('/', (req, res) => {
-    let clientId;
-    clients.map((v) => {
-        if (v.sid === req.sessionID) {
-            clientId = v.cid;
-        }
-    });
-    if (!clientId) {
-        clientId = uuidv4();
-        clients.push({
-            sid: req.sessionID,
-            cid: clientId,
-            mid: ''
-        });
-    }
+    if (argv.l) console.log(`HTTP connect >> ${req.sessionID}`);
+    let clientId = initConnection(argv.l, req.sessionID);
     res.render('main', {clientId: clientId, mode: req.query.mode, page: 'main'})
 });
 
@@ -141,13 +136,21 @@ app.get('/test', (req, res) => {
     res.render('test', {page: 'test'})
 });
 
+// подключение по REST
+app.get('/connect/:sid', (req, res) => {
+    if (argv.l) console.log(`REST connect >> ${req.params.sid}`);
+    let clientId = initConnection(argv.l, req.params.sid);
+    return res.status(clientId > 0 ? 200 : 404).set('Content-Type', 'text/plain').end(clientId);
+});
+
 //отправка сообщения конкретному клиенту по его id
 app.get('/send/:cid/:msg', (req, res) => {
-    // console.log(`${req.params.cid}:${req.params.msg}`);
+    if (argv.l) console.log(`REST send by ${req.params.cid}`);
     let result = 0;
     clients.map((v) => {
         if (v.cid === req.params.cid) {
             io.to(v.mid).emit('pass transfer', req.params.msg);
+            if (argv.l) console.log(`Sent '${req.params.msg}' to ${v.sid}`);
             result++;
         }
     });
@@ -156,10 +159,12 @@ app.get('/send/:cid/:msg', (req, res) => {
 
 //уведомление о подключении
 app.get('/notify/:cid/:name', (req, res) => {
+    if (argv.l) console.log(`REST notify from ${req.params.name}`);
     let result = 0;
     clients.map((v) => {
         if (v.cid === req.params.cid) {
             io.to(v.mid).emit('notify', req.params.name);
+            if (argv.l) console.log(`App ${req.params.name} connected with ${req.params.cid}`);
             result++;
         }
     });
@@ -168,18 +173,38 @@ app.get('/notify/:cid/:name', (req, res) => {
 
 //завершить сессию
 app.get('/close/:cid', (req, res) => {
+    if (argv.l) console.log(`REST close by ${req.params.cid}`);
     let mIds = [];
     clients.map((v) => {
         if (v.cid === req.params.cid) {
-            console.log('Disconnect ' + v.mid);
             io.to(v.mid).disconnectSockets(true);
             mIds.push(v.mid);
+            if (argv.l) console.log(`Closed session ${v.sid}`);
         }
     });
-    // clients.logValues();
+    if (argv.l) clients.logValues();
     mIds.map((v) => clients.remove(v));
     return processResponse(mIds.length, res);
 });
+
+function initConnection(logEnable, sid) {
+    let clientId = '';
+    clients.map((v) => {
+        if (v.sid === sid) {
+            clientId = v.cid;
+        }
+    });
+    if (clientId === '') {
+        clientId = uuidv4();
+        clients.push({
+            sid: sid,           // http session id
+            cid: clientId,      // server generated client uuid
+            mid: ''             // web socket id
+        });
+        if (logEnable) console.log(`init SID:CID >> ${sid}:${clientId}`);
+    }
+    return clientId;
+}
 
 function processResponse(result, res) {
     return res.status(result > 0 ? 200 : 404).set('Content-Type', 'text/plain').end(result > 0 ? 'OK' : 'NOT FOUND');

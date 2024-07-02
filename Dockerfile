@@ -5,4 +5,6 @@ WORKDIR /app
 RUN apk add --update npm
 COPY . .
 RUN npm ci
-CMD npm run start
+ENV CMD_RUN=start
+ENTRYPOINT ["sh", "-c", "npm run ${CMD_RUN}"]
+#CMD npm run start
