@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
         })
     });
 
-    socket.on('check', (clientId) => {
+    socket.on('register', (clientId) => {
         if (argv.l) console.log(`WS check from ${clientId}`);
         clients.map((v) => {
             if (v.cid === clientId) {
@@ -140,7 +140,7 @@ app.get('/test', (req, res) => {
 app.get('/connect/:sid', (req, res) => {
     if (argv.l) console.log(`REST connect >> ${req.params.sid}`);
     let clientId = initConnection(argv.l, req.params.sid);
-    return res.status(clientId > 0 ? 200 : 404).set('Content-Type', 'text/plain').end(clientId);
+    return res.status(clientId !== '' ? 200 : 404).set('Content-Type', 'text/plain').end(clientId);
 });
 
 //отправка сообщения конкретному клиенту по его id

@@ -110,7 +110,7 @@ var p = {
             act.init({
                 timeout: -1
             });
-            socket.emit('check', '<%= clientId %>')
+            socket.emit('register', '<%= clientId %>')
             $('.inputs').on('click', function () {
                 copyToClipboard($(this).val()).then(msg.showInfo('Скопировано')).catch(this.select());
             });
