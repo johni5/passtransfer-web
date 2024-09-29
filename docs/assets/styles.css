@@ -1,0 +1,129 @@
+
+body {
+    min-height: 20rem;
+    padding-top: 4.5rem;
+}
+
+.main-container {
+    min-height: 40rem;
+}
+
+.content-bg {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.inputs {
+    margin: 10px;
+}
+
+
+#qrcodebg {
+    margin-top: 20px;
+    display: inline-block;
+    border-radius: 10px;
+    border: 5px;
+    padding: 25px;
+}
+
+#qrcodebg.offline {
+    border-color: #d6d600;
+    background-color: #d6d600;
+}
+
+#qrcodebg.online {
+    border-color: green;
+    background-color: green;
+}
+
+#qrcode {
+    display: inline-block;
+    min-height: 250px;
+    min-width: 250px;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #fff;
+}
+
+@media (max-width: 600px) {
+    #qrcodebg {
+        border-radius: 10px;
+        border: 2px;
+        padding: 15px;
+    }
+
+    #qrcode {
+        min-height: 100px;
+        min-width: 100px;
+    }
+    #qrcode img {
+        max-height: 200px;
+        max-width: 200px;
+    }
+}
+
+.page-header {
+    text-align: center;
+}
+
+.messages {
+    width: 400px;
+    border:  2px #deba78 solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 15px auto;
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    background-color: #fff;
+    font-size: 14px;
+    position: relative;
+}
+
+.messages-ctx div {
+    padding: 3px 0;
+    text-align: justify;
+}
+
+.msg-close, .msg-close:hover {
+    border:  2px #deba78 solid;
+    color: #deba78;
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    z-index: 10000;
+    background-color: #fff;
+    border-radius: 13px;
+    display: block;
+    height: 20px;
+    width: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    text-align: center;
+    line-height: 14px;
+}
+
+.action {
+    color: blue;
+    cursor: pointer;
+}
+
+.warn {
+    color: orange;
+}
+
+.err {
+    color: red;
+}
+
+.info {
+    color: #000;
+}
+
+
+#appname {
+    color: orange;
+}
+
+.online #appname {
+    color: green;
+}
