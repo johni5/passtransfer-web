@@ -1,17 +1,48 @@
 <!doctype html>
 <html lang="en">
-<%
-var p = {
-    page: page,
-    title: 'Privacy Policy'
-}
-%>
 <head>
-    <%- include('fr/header', p); %>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Pass Transfer | Privacy Policy </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
 </head>
 <body>
 
-<%- include('fr/navigation', p); %>
+<header class="">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img width="24" height="24" src="../img/ic_key.svg" title="Pass Transfer">
+                Pass Transfer
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                <ul class="navbar-nav  mb-2 mb-md-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://z34407.adman.cloud/">Main</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://z34407.adman.cloud/download">Download</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://z34407.adman.cloud/help">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://z34407.adman.cloud/contacts">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
 <main class="main-container">
 
@@ -219,7 +250,22 @@ var p = {
 
 </main>
 
-<%- include('fr/footer', p); %>
+<footer class="container d-flex flex-wrap justify-content-between align-items-center py-2 my-4 border-top">
+    <p class="col-md-4 mb-0 text-muted">© 2023 <b>Pass Transfer</b></p>
+
+
+    <ul class="nav col-md-6 justify-content-end">
+        <li class="nav-item"><a href="https://z34407.adman.cloud/" class="nav-link px-2 text-muted">Main</a></li>
+        <li class="nav-item"><a href="https://z34407.adman.cloud/download" class="nav-link px-2 text-muted">Download</a>
+        </li>
+        <li class="nav-item"><a href="https://z34407.adman.cloud/help" class="nav-link px-2 text-muted">Help</a></li>
+        <li class="nav-item"><a href="https://z34407.adman.cloud/contacts" class="nav-link px-2 text-muted">Contact
+            Us</a></li>
+    </ul>
+
+    <script src="assets/bootstrap.bundle.min.js"></script>
+
+</footer>
 
 </body>
 </html>
